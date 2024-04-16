@@ -27,15 +27,17 @@ export class AppComponent implements OnInit{
   request!:ReserveRoomRequest;
   currentCheckInVal!:string;
   currentCheckOutVal!:string;
+  englishMessage!: string;
+  frenchMessage!: string;
 
     ngOnInit(){
       this.roomsearch= new FormGroup({
         checkin: new FormControl(' '),
         checkout: new FormControl(' ')
+
       });
 
  //     this.rooms=ROOMS;
-
 
     const roomsearchValueChanges$ = this.roomsearch.valueChanges;
 
@@ -44,6 +46,22 @@ export class AppComponent implements OnInit{
       this.currentCheckInVal = x.checkin;
       this.currentCheckOutVal = x.checkout;
     });
+
+      this.fetchWelcomeMessages();
+  }
+
+  fetchWelcomeMessages() {
+    this.httpClient.get<string[]>(this.baseURL + '/welcome/messages').subscribe(
+      response => {
+        console.log('Received Data:', response);
+
+        this.englishMessage = response[0] ?? 'Default English Message';
+        this.frenchMessage = response[1] ?? 'Default French Message';
+      },
+      error => {
+        console.error('Error fetching welcome messages:', error);
+      }
+    );
   }
 
     onSubmit({value,valid}:{value:Roomsearch,valid:boolean}){
@@ -82,6 +100,7 @@ export class AppComponent implements OnInit{
 
        return this.httpClient.get(this.baseURL + '/room/reservation/v1?checkin='+ this.currentCheckInVal + '&checkout='+this.currentCheckOutVal, {responseType: 'json'});
     }
+
 
   }
 
