@@ -29,6 +29,7 @@ export class AppComponent implements OnInit{
   currentCheckOutVal!:string;
   englishMessage!: string;
   frenchMessage!: string;
+  timeZoneData!: string;
 
     ngOnInit(){
       this.roomsearch= new FormGroup({
@@ -48,6 +49,21 @@ export class AppComponent implements OnInit{
     });
 
       this.fetchWelcomeMessages();
+      this.fetchTimeZoneData()
+  }
+
+  fetchTimeZoneData() {
+    const apiUrl = 'http://localhost:8080/welcome/timezones';
+    console.log('Fetching data from:', apiUrl); // Log the URL
+
+    this.httpClient.get<string>(apiUrl, { responseType: 'text' as 'json' }).subscribe(
+      data => {
+        this.timeZoneData = data;
+      },
+      error => {
+        console.error('Error fetching time zone data:', error);
+      }
+    );
   }
 
   fetchWelcomeMessages() {
