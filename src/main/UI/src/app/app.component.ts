@@ -66,12 +66,12 @@ export class AppComponent implements OnInit{
   }
 
   fetchWelcomeMessages() {
-    this.httpClient.get<string[]>(this.baseURL + '/welcome/messages').subscribe(
+    this.httpClient.get<any>(this.baseURL + '/welcome/messages').subscribe(
       response => {
         console.log('Received Data:', response);
 
-        this.englishMessage = response[0] ?? 'Default English Message';
-        this.frenchMessage = response[1] ?? 'Default French Message';
+        this.englishMessage = response.messages[0] ?? 'Default English Message';
+        this.frenchMessage = response.messages[1] ?? 'Default French Message';
       },
       error => {
         console.error('Error fetching welcome messages:', error);
