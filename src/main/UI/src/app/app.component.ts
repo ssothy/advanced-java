@@ -54,7 +54,6 @@ export class AppComponent implements OnInit{
 
   fetchTimeZoneData() {
     const apiUrl = 'http://localhost:8080/welcome/timezones';
-    console.log('Fetching data from:', apiUrl); // Log the URL
 
     this.httpClient.get<string>(apiUrl, { responseType: 'text' as 'json' }).subscribe(
       data => {
